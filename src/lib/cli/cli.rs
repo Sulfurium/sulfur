@@ -7,16 +7,16 @@ pub enum Cli {
     /// Install a package
     Install {
         #[structopt()]
-        package_name: Vec<String>,
+        packages: Vec<String>,
     },
     /// Remove a package
     Remove {
         #[structopt()]
-        package_name: Vec<String>,
+        packages: Vec<String>,
     },
     /// Search a package
     Query {
         #[structopt()]
-        package_name: Vec<String>,
+        packages: Vec<String>,
     },
 }

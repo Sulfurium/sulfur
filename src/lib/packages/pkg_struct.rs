@@ -1,8 +1,9 @@
 use toml::value::Datetime;
+use std::str::FromStr;
 
 pub struct PKG {
     pub name: String,
-    pub version: u64,
+    pub version: f64,
     pub subversion: u64,
     pub description: String,
     pub url: String,
@@ -18,7 +19,7 @@ impl PKG {
     pub fn get_name(&self) -> String {
         self.name.clone()
     }
-    pub fn get_version(&self) -> u64 {
+    pub fn get_version(&self) -> f64 {
         self.version
     }
     pub fn get_description(&self) -> String {
@@ -44,6 +45,21 @@ impl PKG {
     }
     pub fn get_optional_dependence(&self) -> Vec<String> {
         self.dependence.clone()
+    }
+    pub fn new() -> PKG {
+        PKG {
+            name: "".to_string(),
+            version: 0.0,
+            subversion: 0,
+            description: "".to_string(),
+            url: "".to_string(),
+            packager: "".to_string(),
+            date: Datetime::from_str("1979-05-27T07:32:00-08:00").expect("Error"),
+            license: Licenses::MIT,
+            dependence: Vec::new(),
+            architecture: Architecture::X8664,
+            optional_dependence: Vec::new()
+        }
     }
 }
 
