@@ -1,6 +1,8 @@
-use toml::value::Datetime;
 use std::str::FromStr;
+use toml::value::Datetime;
+use serde::Deserialize;
 
+#[derive(Debug, Deserialize)]
 pub struct PKG {
     pub name: String,
     pub version: f64,
@@ -10,9 +12,9 @@ pub struct PKG {
     pub packager: String,
     pub date: Datetime,
     pub license: Licenses,
-    pub dependence: Vec<String>,
+    pub dependence: Option<Vec<String>>,
     pub architecture: Architecture,
-    pub optional_dependence: Vec<String>
+    pub optional_dependence: Option<Vec<String>>,
 }
 
 impl PKG {
@@ -38,13 +40,13 @@ impl PKG {
         self.license.clone()
     }
     pub fn get_dependence(&self) -> Vec<String> {
-        self.dependence.clone()
+        self.dependence.as_ref().unwrap_or(&vec![String::new()]).to_vec()
     }
     pub fn get_architecture(&self) -> Architecture {
         self.architecture.clone()
     }
     pub fn get_optional_dependence(&self) -> Vec<String> {
-        self.dependence.clone()
+        self.optional_dependence.as_ref().unwrap_or(&vec![String::new()]).to_vec()
     }
     pub fn new() -> PKG {
         PKG {
@@ -56,18 +58,19 @@ impl PKG {
             packager: "".to_string(),
             date: Datetime::from_str("1979-05-27T07:32:00-08:00").expect("Error"),
             license: Licenses::MIT,
-            dependence: Vec::new(),
+            dependence: Some(Vec::new()),
             architecture: Architecture::X8664,
-            optional_dependence: Vec::new()
+            optional_dependence: Some(Vec::new()),
         }
     }
 }
-
+#[derive(Debug, Deserialize)]
 pub enum Licenses {
     MIT,
     GPL,
     GPLv2,
     APACHE,
+    WTFPL,
     PROPRIETARY,
 }
 impl Clone for Licenses {
@@ -78,15 +81,16 @@ impl Clone for Licenses {
 impl Licenses {
     pub fn format(&self) -> String {
         match &self {
-            Licenses::MIT => {String::from("MIT")}
-            Licenses::GPL => {String::from("GPL")}
-            Licenses::GPLv2 => {String::from("GPLv2")}
-            Licenses::APACHE => {String::from("APACHE")}
-            Licenses::PROPRIETARY => {String::from("PROPRIETARY")}
+            Licenses::MIT => String::from("MIT"),
+            Licenses::GPL => String::from("GPL"),
+            Licenses::GPLv2 => String::from("GPLv2"),
+            Licenses::APACHE => String::from("APACHE"),
+            Licenses::PROPRIETARY => String::from("PROPRIETARY"),
+            Licenses::WTFPL => {String::from("WTFPL")}
         }
     }
 }
-
+#[derive(Debug, Deserialize)]
 pub enum Architecture {
     X8664,
     X64,
@@ -102,10 +106,9 @@ impl Clone for Architecture {
 impl Architecture {
     pub fn format(&self) -> String {
         match &self {
-            Architecture::X8664 => {String::from("x86_64")}
-            Architecture::X64 => {String::from("x64")}
-            Architecture::RISCV => {String::from("RISCV")}
+            Architecture::X8664 => String::from("x86_64"),
+            Architecture::X64 => String::from("x64"),
+            Architecture::RISCV => String::from("RISCV"),
         }
     }
 }
-

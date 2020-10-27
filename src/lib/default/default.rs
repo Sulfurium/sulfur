@@ -1,12 +1,12 @@
 use async_std::fs;
 use async_std::fs::read;
 use async_std::fs::read_dir;
-use tokio::io::Error;
-use tokio::stream::StreamExt;
+use crate::lib::db::create::create;
 
 pub async fn default() -> std::io::Result<()> {
     default_folder().await.expect("Error");
     default_file().await.expect("Error");
+    create();
     Ok(())
 }
 
@@ -34,6 +34,11 @@ async fn default_file() -> std::io::Result<()> {
             Err(e) => println!("{}", e),
         }
     }
-
+    if read("/etc/sulfur/db.sql").await.is_err() {
+        match fs::write("/etc/sulfur/db.sql", "").await {
+            Ok(_) => println!("Ok"),
+            Err(e) => println!("{}", e),
+        }
+    }
     Ok(())
 }
