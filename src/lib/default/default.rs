@@ -1,7 +1,7 @@
+use crate::lib::db::create::create;
 use async_std::fs;
 use async_std::fs::read;
 use async_std::fs::read_dir;
-use crate::lib::db::create::create;
 
 pub async fn default() -> std::io::Result<()> {
     default_folder().await.expect("Error");

@@ -4,7 +4,8 @@ use rusqlite::params;
 pub fn create() {
     let conn = conn();
 
-    conn.execute("
+    conn.execute(
+        "
     CREATE TABLE IF NOT EXISTS Packages (
         id                      INTEGER PRIMARY KEY,
         name                    TEXT NOT NULL,
@@ -18,5 +19,8 @@ pub fn create() {
         dependence              TEXT NOT NULL,
         architecture            TEXT NOT NULL,
         optional_dependence     TEXT
-    )", params![]).expect("Error");
+    )",
+        params![],
+    )
+    .expect("Error");
 }

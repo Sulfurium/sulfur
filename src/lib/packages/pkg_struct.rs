@@ -1,6 +1,6 @@
+use serde::Deserialize;
 use std::str::FromStr;
 use toml::value::Datetime;
-use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct PKG {
@@ -40,13 +40,19 @@ impl PKG {
         self.license.clone()
     }
     pub fn get_dependence(&self) -> Vec<String> {
-        self.dependence.as_ref().unwrap_or(&vec![String::new()]).to_vec()
+        self.dependence
+            .as_ref()
+            .unwrap_or(&vec![String::new()])
+            .to_vec()
     }
     pub fn get_architecture(&self) -> Architecture {
         self.architecture.clone()
     }
     pub fn get_optional_dependence(&self) -> Vec<String> {
-        self.optional_dependence.as_ref().unwrap_or(&vec![String::new()]).to_vec()
+        self.optional_dependence
+            .as_ref()
+            .unwrap_or(&vec![String::new()])
+            .to_vec()
     }
     pub fn new() -> PKG {
         PKG {
@@ -86,7 +92,7 @@ impl Licenses {
             Licenses::GPLv2 => String::from("GPLv2"),
             Licenses::APACHE => String::from("APACHE"),
             Licenses::PROPRIETARY => String::from("PROPRIETARY"),
-            Licenses::WTFPL => {String::from("WTFPL")}
+            Licenses::WTFPL => String::from("WTFPL"),
         }
     }
 }
