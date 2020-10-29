@@ -1,11 +1,8 @@
 use crate::lib::packages::pkg_struct::PKG;
-use std::io::{Read, Write};
-use tokio::stream::StreamExt;
-use async_std::fs::{read_dir, ReadDir, DirEntry, Metadata};
+use std::io::{Write, Read};
 use async_std::io::ReadExt;
-use tokio::io::{Error, AsyncReadExt};
+use tokio::io::Error;
 use walkdir::WalkDir;
-use async_std::prelude::*;
 
 pub async fn install(packages: Vec<String>) {
     for package in packages {
@@ -13,15 +10,17 @@ pub async fn install(packages: Vec<String>) {
     }
 }
 
-pub async fn install_package(package: String) {
+pub async fn install_package(package: String)  {
 
     let struck_pkg: PKG = get_config_of_package(package.clone());
 
     if struck_pkg.get_name() == "" {
         print!("I can't install Package");
     } else {
-        install_file_of_package(package.clone()).await;
-
+        let package_result = install_file_of_package(package.clone()).await.expect("Error");
+        if package_result == true {
+            println!("{} was installed", package.clone());
+        }
     }
 
 }
@@ -30,18 +29,17 @@ pub fn get_config_of_package(package: String) -> PKG {
     let path = format!("./temp/{}/.PKG", package);
     let mut pkg_info = String::new();
     let mut file = std::fs::File::open(path).expect("Error");
-    std::fs::File::read_to_string(&mut file, &mut pkg_info);
+    std::fs::File::read_to_string(&mut file, &mut pkg_info).expect("Error");
 
     toml::from_str(pkg_info.as_str()).unwrap_or(PKG::new())
 }
 
-pub async fn install_file_of_package(package: String) -> bool {
-    let mut result = true;
-    let mut path = format!("./temp/{}/", package);
-    result = false;
+pub async fn install_file_of_package(package: String) -> std::io::Result<bool> {
+    let result = true;
+    let path = format!("./temp/{}/", package);
     let af = analyze_folder(path).await;
     check_path(package, af).await;
-    result
+    Ok(result)
 }
 
 pub async fn move_file(package_name:String, path: String) -> std::io::Result<bool> {
@@ -50,28 +48,22 @@ pub async fn move_file(package_name:String, path: String) -> std::io::Result<boo
     let mut buf: Vec<u8> = Vec::new();
     let mut source_file = async_std::fs::File::open(source_path.clone()).await?;
     source_file.read_to_end(&mut buf).await?;
-
-    std::fs::File::create(dest_path.to_string()).unwrap().write(buf.as_slice());
-    //std::fs::File::open(dest_path.clone()).expect("Error").write_all(buf.as_slice()).expect("Error");
-   // println!("{:?}",af);
-    //af.write_all(buf.as_slice()).expect("Error");
-    println!("{} => {}", source_path, dest_path);
-    println!("{:?}", buf);
+    std::fs::File::create(dest_path.to_string()).unwrap().write(buf.as_slice()).expect("Error");
     Ok(true)
 }
+
 async fn check_path(package_name:String, paths: Vec<Vec<String>>) {
     for path in paths  {
         let mut n = 1;
         let mut string_path = String::new();
         let lenght = path.len();
         for p in path {
-            println!("{} - {}", n,lenght);
             string_path.push_str(format!("/{}", p).as_str());
             if n == lenght {
-                move_file(package_name.clone(), string_path.clone()).await;
+                move_file(package_name.clone(), string_path.clone()).await.expect("Error");
             } else {
                 match async_std::fs::read_dir(string_path.clone()).await {
-                    Ok(e) => {println!("Folder exist")}
+                    Ok(_) => {}
                     Err(e) => {println!("{}) {} => {}",n,p, e)}
                 }
             }
@@ -101,6 +93,5 @@ pub async fn analyze_folder(path: String) -> Vec<Vec<String>> {
                 }
             }
         }
-    println!("{:?}", vec);
     vec
 }

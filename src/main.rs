@@ -1,5 +1,4 @@
 use crate::lib::default::default::default;
-use crate::lib::packages::extract::extract;
 use crate::lib::packages::install::install;
 use lib::cli::cli::Cli;
 use structopt::StructOpt;
