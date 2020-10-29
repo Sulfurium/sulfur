@@ -1,4 +1,5 @@
 use crate::lib::default::default::default;
+use crate::lib::packages::extract::extract;
 use crate::lib::packages::install::install;
 use lib::cli::cli::Cli;
 use structopt::StructOpt;
@@ -11,7 +12,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if users::get_current_uid() == 0 {
         match Cli::from_args() {
-            Cli::Install { packages } => install(packages),
+            Cli::Install { packages } => install(packages).await,
             Cli::Query { packages } => println!("{:?}", packages),
             Cli::Remove { packages } => println!("{:?}", packages),
         };
