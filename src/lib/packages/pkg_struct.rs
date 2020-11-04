@@ -2,11 +2,11 @@ use serde::Deserialize;
 use std::str::FromStr;
 use toml::value::Datetime;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct PKG {
     pub name: String,
     pub version: f64,
-    pub subversion: u64,
+    pub subversion: i64,
     pub description: String,
     pub url: String,
     pub packager: String,
@@ -24,6 +24,9 @@ impl PKG {
     pub fn get_version(&self) -> f64 {
         self.version
     }
+    pub fn get_subversion(&self) -> i64 {
+        self.subversion
+    }
     pub fn get_description(&self) -> String {
         self.description.clone()
     }
@@ -38,6 +41,9 @@ impl PKG {
     }
     pub fn get_license(&self) -> Licenses {
         self.license.clone()
+    }
+    pub fn format_license(&self) -> String {
+        self.license.format()
     }
     pub fn get_dependence(&self) -> Vec<String> {
         self.dependence
@@ -69,8 +75,32 @@ impl PKG {
             optional_dependence: Some(Vec::new()),
         }
     }
+    pub fn deps_format(&self) -> String {
+        let mut string_result = String::new();
+
+        string_result.push('[');
+
+        if let Some(opt_dep) = self.dependence.clone()  {
+            for od in opt_dep {
+                string_result.push_str(format!("{}," ,od).as_ref())
+            }
+        }
+        string_result.push(']');
+        string_result
+    }
+    pub fn opt_dep_format(&self) -> String {
+        let mut string_result = String::new();
+        string_result.push('[');
+        if let Some(opt_dep) = self.optional_dependence.clone()  {
+            for od in opt_dep {
+                string_result.push_str(format!("{}," ,od).as_ref())
+            }
+        }
+        string_result.push(']');
+        string_result
+    }
 }
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub enum Licenses {
     MIT,
     GPL,
@@ -79,11 +109,7 @@ pub enum Licenses {
     WTFPL,
     PROPRIETARY,
 }
-impl Clone for Licenses {
-    fn clone(&self) -> Self {
-        self.to_owned()
-    }
-}
+
 impl Licenses {
     pub fn format(&self) -> String {
         match &self {
@@ -96,18 +122,13 @@ impl Licenses {
         }
     }
 }
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub enum Architecture {
     X8664,
     X64,
     RISCV,
 }
 
-impl Clone for Architecture {
-    fn clone(&self) -> Self {
-        self.to_owned()
-    }
-}
 
 impl Architecture {
     pub fn format(&self) -> String {

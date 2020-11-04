@@ -1,5 +1,6 @@
-use rusqlite::Connection;
+use sqlx::Connection;
+use sqlx::SqliteConnection;
 
-pub fn conn() -> Connection {
-    Connection::open("/etc/sulfur/db.sql").expect("Error")
+pub async fn conn() -> SqliteConnection {
+    SqliteConnection::connect("/etc/sulfur/db.sql").await.expect("Error")
 }

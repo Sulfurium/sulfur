@@ -7,6 +7,7 @@ mod lib;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+
     default().await.expect("Error");
 
     if users::get_current_uid() == 0 {

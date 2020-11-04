@@ -6,7 +6,7 @@ use async_std::fs::read_dir;
 pub async fn default() -> std::io::Result<()> {
     default_folder().await.expect("Error");
     default_file().await.expect("Error");
-    create();
+    create().await;
     Ok(())
 }
 
