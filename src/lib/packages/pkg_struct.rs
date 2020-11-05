@@ -128,6 +128,7 @@ pub enum Architecture {
     X8664,
     X64,
     RISCV,
+    ANY,
 }
 
 
@@ -137,6 +138,7 @@ impl Architecture {
             Architecture::X8664 => String::from("x86_64"),
             Architecture::X64 => String::from("x64"),
             Architecture::RISCV => String::from("RISCV"),
+            Architecture::ANY => String::from("ANY"),
         }
     }
 }
