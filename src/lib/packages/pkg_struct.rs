@@ -120,6 +120,33 @@ impl Licenses {
             Licenses::APACHE => String::from("APACHE"),
             Licenses::PROPRIETARY => String::from("PROPRIETARY"),
             Licenses::WTFPL => String::from("WTFPL"),
+            Licenses::NO_LICENSE => String::from("NO_LICENSE"),
+        }
+    }
+    pub fn from_str<'a>(str: &str) -> Result<Licenses, std::io::Error> {
+        match str.to_uppercase().as_str() {
+             "MIT" => {
+                Ok(Licenses::MIT)
+            },
+            "GPL" => {
+                Ok(Licenses::GPL)
+            },
+            "GPLv2" => {
+                Ok(Licenses::GPLv2)
+            },
+            "APACHE" => {
+                Ok(Licenses::APACHE)
+            },
+            "PROPRIETARY" => {
+                Ok(Licenses::PROPRIETARY)
+            },
+            "WTFPL" => {
+                Ok(Licenses::WTFPL)
+            },
+            "NO_LICENSE" => {
+                Ok(Licenses::NO_LICENSE)
+            },
+            _ => { Err(std::io::Error::new(ErrorKind::InvalidData, "Can't parse from str"))}
         }
     }
 }
