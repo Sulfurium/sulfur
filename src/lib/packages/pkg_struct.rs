@@ -108,6 +108,7 @@ pub enum Licenses {
     APACHE,
     WTFPL,
     PROPRIETARY,
+    NO_LICENSE
 }
 
 impl Licenses {
