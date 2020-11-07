@@ -3,7 +3,8 @@ use crate::lib::db::conn::conn;
 pub async fn create() {
     let mut conn = conn().await;
 
-    sqlx::query("CREATE TABLE IF NOT EXISTS Packages (
+    sqlx::query(
+        "CREATE TABLE IF NOT EXISTS Packages (
         id                      INTEGER PRIMARY KEY,
         name                    TEXT NOT NULL,
         version                 TEXT NOT NULL,
@@ -17,5 +18,9 @@ pub async fn create() {
         architecture            TEXT NOT NULL,
         optional_dependence     TEXT,
         installed               INTEGER NOT NULL
-    )").execute(&mut conn).await.expect("Error");
+    )",
+    )
+    .execute(&mut conn)
+    .await
+    .expect("Error");
 }

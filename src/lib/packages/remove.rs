@@ -1,3 +1,1 @@
-pub fn remove(packages: Vec<String>) {
-    
-}
+pub fn remove(packages: Vec<String>) {}

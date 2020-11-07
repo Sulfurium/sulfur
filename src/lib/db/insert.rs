@@ -18,6 +18,8 @@ pub async fn insert(package: String) {
                             package_info.get_architecture().format(),
                             package_info.opt_dep_format(),0);
 
-    sqlx::query(query.as_str()).execute(&mut conn).await.expect("Error");
-
+    sqlx::query(query.as_str())
+        .execute(&mut conn)
+        .await
+        .expect("Error");
 }

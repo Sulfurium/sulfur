@@ -7,7 +7,6 @@ use walkdir::WalkDir;
 pub async fn install(packages: Vec<String>) {
     for package in packages {
         install_package(package.clone()).await;
-
     }
 }
 

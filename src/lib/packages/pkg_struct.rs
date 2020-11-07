@@ -1,8 +1,8 @@
 use serde::Deserialize;
-use std::str::FromStr;
-use toml::value::Datetime;
 use std::error::Error;
 use std::io::ErrorKind;
+use std::str::FromStr;
+use toml::value::Datetime;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct PKG {
@@ -17,7 +17,7 @@ pub struct PKG {
     pub dependence: Option<Vec<String>>,
     pub architecture: Architecture,
     pub optional_dependence: Option<Vec<String>>,
-    pub installed: bool
+    pub installed: bool,
 }
 
 impl PKG {
@@ -34,7 +34,7 @@ impl PKG {
             dependence: Some(Vec::new()),
             architecture: Architecture::X8664,
             optional_dependence: Some(Vec::new()),
-            installed: false
+            installed: false,
         }
     }
     pub fn get_name(&self) -> String {
@@ -73,8 +73,7 @@ impl PKG {
     pub fn get_architecture(&self) -> Architecture {
         self.architecture.clone()
     }
-    pub fn get_optional_dependence(&self) -> Vec<String>
-    {
+    pub fn get_optional_dependence(&self) -> Vec<String> {
         self.optional_dependence
             .as_ref()
             .unwrap_or(&vec![String::new()])
@@ -89,9 +88,9 @@ impl PKG {
 
         string_result.push('[');
 
-        if let Some(opt_dep) = self.dependence.clone()  {
+        if let Some(opt_dep) = self.dependence.clone() {
             for od in opt_dep {
-                string_result.push_str(format!("{}," ,od).as_ref())
+                string_result.push_str(format!("{},", od).as_ref())
             }
         }
         string_result.push(']');
@@ -100,9 +99,9 @@ impl PKG {
     pub fn opt_dep_format(&self) -> String {
         let mut string_result = String::new();
         string_result.push('[');
-        if let Some(opt_dep) = self.optional_dependence.clone()  {
+        if let Some(opt_dep) = self.optional_dependence.clone() {
             for od in opt_dep {
-                string_result.push_str(format!("{}," ,od).as_ref())
+                string_result.push_str(format!("{},", od).as_ref())
             }
         }
         string_result.push(']');
@@ -156,7 +155,7 @@ impl PKG {
         self.installed = installed;
         self
     }
-    pub fn set_installed_from_i64(&mut self,value: i64) -> Result<&mut PKG, std::io::Error> {
+    pub fn set_installed_from_i64(&mut self, value: i64) -> Result<&mut PKG, std::io::Error> {
         if value == 0 {
             self.set_installed(false);
             return Ok(self);
@@ -164,9 +163,11 @@ impl PKG {
             self.set_installed(true);
             return Ok(self);
         } else {
-           return Err(std::io::Error::new(ErrorKind::InvalidData, "Can't parse value"))
+            return Err(std::io::Error::new(
+                ErrorKind::InvalidData,
+                "Can't parse value",
+            ));
         }
-
     }
 }
 #[derive(Debug, Deserialize, Clone)]
@@ -177,7 +178,7 @@ pub enum Licenses {
     APACHE,
     WTFPL,
     PROPRIETARY,
-    NO_LICENSE
+    NO_LICENSE,
 }
 
 impl Licenses {
@@ -194,28 +195,17 @@ impl Licenses {
     }
     pub fn from_str<'a>(str: &str) -> Result<Licenses, std::io::Error> {
         match str.to_uppercase().as_str() {
-             "MIT" => {
-                Ok(Licenses::MIT)
-            },
-            "GPL" => {
-                Ok(Licenses::GPL)
-            },
-            "GPLv2" => {
-                Ok(Licenses::GPLv2)
-            },
-            "APACHE" => {
-                Ok(Licenses::APACHE)
-            },
-            "PROPRIETARY" => {
-                Ok(Licenses::PROPRIETARY)
-            },
-            "WTFPL" => {
-                Ok(Licenses::WTFPL)
-            },
-            "NO_LICENSE" => {
-                Ok(Licenses::NO_LICENSE)
-            },
-            _ => { Err(std::io::Error::new(ErrorKind::InvalidData, "Can't parse from str"))}
+            "MIT" => Ok(Licenses::MIT),
+            "GPL" => Ok(Licenses::GPL),
+            "GPLv2" => Ok(Licenses::GPLv2),
+            "APACHE" => Ok(Licenses::APACHE),
+            "PROPRIETARY" => Ok(Licenses::PROPRIETARY),
+            "WTFPL" => Ok(Licenses::WTFPL),
+            "NO_LICENSE" => Ok(Licenses::NO_LICENSE),
+            _ => Err(std::io::Error::new(
+                ErrorKind::InvalidData,
+                "Can't parse from str",
+            )),
         }
     }
 }
@@ -227,7 +217,6 @@ pub enum Architecture {
     ANY,
 }
 
-
 impl Architecture {
     pub fn format(&self) -> String {
         match &self {
@@ -237,21 +226,16 @@ impl Architecture {
             Architecture::ANY => String::from("ANY"),
         }
     }
-    pub fn from_str(str: &str) -> Result<Architecture, std::io::Error>{
+    pub fn from_str(str: &str) -> Result<Architecture, std::io::Error> {
         match str.to_uppercase().as_str() {
-            "ANY" => {
-                Ok(Architecture::ANY)
-            },
-            "RISCV" => {
-                Ok(Architecture::RISCV)
-            },
-            "X64" => {
-                Ok(Architecture::X64)
-            },
-            "X8664" => {
-                Ok(Architecture::X8664)
-            },
-            _ => { Err(std::io::Error::new(ErrorKind::InvalidData, "Can't parse from str"))}
+            "ANY" => Ok(Architecture::ANY),
+            "RISCV" => Ok(Architecture::RISCV),
+            "X64" => Ok(Architecture::X64),
+            "X8664" => Ok(Architecture::X8664),
+            _ => Err(std::io::Error::new(
+                ErrorKind::InvalidData,
+                "Can't parse from str",
+            )),
         }
     }
 }
