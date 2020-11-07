@@ -17,7 +17,7 @@ pub struct PKG {
     pub dependence: Option<Vec<String>>,
     pub architecture: Architecture,
     pub optional_dependence: Option<Vec<String>>,
-    pub installed: bool,
+    pub installed: Option<bool>,
 }
 
 impl PKG {
@@ -34,7 +34,7 @@ impl PKG {
             dependence: Some(Vec::new()),
             architecture: Architecture::X8664,
             optional_dependence: Some(Vec::new()),
-            installed: false,
+            installed: Some(false),
         }
     }
     pub fn get_name(&self) -> String {
@@ -79,7 +79,7 @@ impl PKG {
             .unwrap_or(&vec![String::new()])
             .to_vec()
     }
-    pub fn get_installed(&self) -> bool {
+    pub fn get_installed(&self) -> Option<bool> {
         self.installed
     }
 
@@ -152,7 +152,7 @@ impl PKG {
         self
     }
     pub fn set_installed(&mut self, installed: bool) -> &mut PKG {
-        self.installed = installed;
+        self.installed = Some(installed);
         self
     }
     pub fn set_installed_from_i64(&mut self, value: i64) -> Result<&mut PKG, std::io::Error> {

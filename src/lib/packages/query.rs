@@ -79,7 +79,7 @@ pub fn format(vec_pkg: Vec<PKG>) {
     } else {
         for pkg in vec_pkg {
             let mut install = String::new();
-            if pkg.installed {
+            if pkg.installed.unwrap() {
                 install.push_str("(Installed)")
             }
             println!(
