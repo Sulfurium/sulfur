@@ -31,7 +31,7 @@ pub fn get_config_of_package(package: String) -> PKG {
     let mut pkg_info = String::new();
     let mut file = std::fs::File::open(path).expect("Error");
     std::fs::File::read_to_string(&mut file, &mut pkg_info).expect("Error");
-
+    println!("{}", pkg_info);
     toml::from_str(pkg_info.as_str()).unwrap_or(PKG::new())
 }
 

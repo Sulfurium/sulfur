@@ -6,17 +6,24 @@ use toml::value::Datetime;
 use std::str::FromStr;
 
 pub async fn query(packages: Vec<String>) {
+    if packages.is_empty() {
+        println!("No packages names given")
+    } else {
     for package in packages {
-        query_package(package).await;
+        format(query_package(package).await.expect("Error"));
     }
 }
+}
 
-async fn query_package(package: String) -> std::io::Result<()> {
+async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
     let mut conn = conn().await;
-
     let mut rows = sqlx::query("SELECT * FROM Packages WHERE name = ?").bind(package).fetch(&mut conn);
-    let mut pkg = PKG::new();
+
+    let mut vec_pkg: Vec<PKG> = Vec::new();
+
     while let Some(row) = rows.try_next().await.expect("Error") {
+        let mut pkg = PKG::new();
+
         pkg.set_name(row.try_get::<&str, &str>("name").expect("Error").to_string());
         pkg.set_version((row.try_get::<&str, &str>("version").expect("Error")).parse().unwrap());
         pkg.set_subversion((row.try_get::<&str, &str>("subversion").expect("Error")).parse().unwrap_or(0));
@@ -28,8 +35,22 @@ async fn query_package(package: String) -> std::io::Result<()> {
         pkg.set_architecture(Architecture::from_str(row.try_get::<&str, &str>("architecture").expect("Error")).unwrap_or(Architecture::ANY));
         pkg.set_installed_from_i64(row.try_get::<i64, &str>("installed").expect("Error")).expect("Error");
 
+        vec_pkg.push(pkg);
     }
-    println!("{:?}", pkg);
-    Ok(())
 
+    Ok(vec_pkg)
+}
+
+pub fn format(vec_pkg: Vec<PKG>) {
+    if vec_pkg.is_empty() {
+        println!("Nothing Found");
+    } else {
+    for pkg in vec_pkg {
+        let mut install = String::new();
+        if pkg.installed {
+            install.push_str("(Installed)")
+        }
+        println!("{} {}-{} {} \n{}", pkg.name, pkg.version, pkg.subversion, install, pkg.description)
+    }
+}
 }
