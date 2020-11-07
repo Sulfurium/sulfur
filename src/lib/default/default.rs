@@ -13,13 +13,26 @@ pub async fn default() -> std::io::Result<()> {
 async fn default_folder() -> std::io::Result<()> {
     if read_dir("/etc/sulfur").await.is_err() {
         match fs::create_dir("/etc/sulfur").await {
-            Ok(_) => println!("Ok"),
+            Ok(_) => {
+                if read_dir("/etc/sulfur/hook.d").await.is_err() {
+                    match fs::create_dir("/etc/sulfur/hook.d").await {
+                        Ok(_) => {}
+                        Err(e) => {println!("{}", e)}
+                    }
+                };
+                if read_dir("/etc/sulfur/repo.d").await.is_err() {
+                    match fs::create_dir("/etc/sulfur/repo.d").await {
+                        Ok(_) => {}
+                        Err(e) => {println!("{}", e)}
+                    }
+                };
+            }
             Err(e) => println!("{}", e),
         }
     }
     if read_dir("/tmp/sulfur/").await.is_err() {
         match fs::create_dir("/tmp/sulfur").await {
-            Ok(_) => println!("Ok"),
+            Ok(_) => {}
             Err(e) => println!("{}", e),
         }
     }
