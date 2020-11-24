@@ -57,7 +57,7 @@ pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
 
         pkg.set_license(
             Licenses::from_str(row.try_get::<&str, &str>("license").expect("Error"))
-                .unwrap_or(Licenses::NO_LICENSE),
+                .unwrap_or(Licenses::NOLICENSE),
         );
 
         pkg.set_architecture(
@@ -72,8 +72,4 @@ pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
     }
 
     Ok(vec_pkg)
-}
-
-pub async fn query_file(name: String) -> Vec<String> {
-    Vec::new()
 }

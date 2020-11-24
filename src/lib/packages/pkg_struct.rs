@@ -1,5 +1,4 @@
 use serde::Deserialize;
-use std::error::Error;
 use std::io::ErrorKind;
 use std::str::FromStr;
 use toml::value::Datetime;
@@ -187,7 +186,7 @@ pub enum Licenses {
     APACHE,
     WTFPL,
     PROPRIETARY,
-    NO_LICENSE,
+    NOLICENSE,
 }
 
 impl Licenses {
@@ -199,7 +198,7 @@ impl Licenses {
             Licenses::APACHE => String::from("APACHE"),
             Licenses::PROPRIETARY => String::from("PROPRIETARY"),
             Licenses::WTFPL => String::from("WTFPL"),
-            Licenses::NO_LICENSE => String::from("NO_LICENSE"),
+            Licenses::NOLICENSE => String::from("NO_LICENSE"),
         }
     }
     pub fn from_str<'a>(str: &str) -> Result<Licenses, std::io::Error> {
@@ -210,7 +209,7 @@ impl Licenses {
             "APACHE" => Ok(Licenses::APACHE),
             "PROPRIETARY" => Ok(Licenses::PROPRIETARY),
             "WTFPL" => Ok(Licenses::WTFPL),
-            "NO_LICENSE" => Ok(Licenses::NO_LICENSE),
+            "NO_LICENSE" => Ok(Licenses::NOLICENSE),
             _ => Err(std::io::Error::new(
                 ErrorKind::InvalidData,
                 "Can't parse from str",

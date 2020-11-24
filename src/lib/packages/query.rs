@@ -1,6 +1,4 @@
 use crate::lib::packages::pkg_struct::PKG;
-use sqlx::Row;
-
 use crate::lib::db::query::query_package;
 use walkdir::WalkDir;
 

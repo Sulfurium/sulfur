@@ -1,6 +1,4 @@
-use crate::lib::packages::pkg_struct::PKG;
 use crate::lib::packages::query::query_folder;
-use std::error::Error;
 
 pub async fn remove(packages: Vec<String>) {
     for i in packages {

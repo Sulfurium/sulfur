@@ -5,9 +5,6 @@ use lib::{
     packages::{query::query, remove::remove},
 };
 use structopt::StructOpt;
-
-use crate::lib::db::query::query_package;
-
 mod lib;
 
 #[tokio::main]

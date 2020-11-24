@@ -2,7 +2,6 @@ use crate::lib::db::insert::insert;
 use crate::lib::packages::pkg_struct::PKG;
 use async_std::io::ReadExt;
 use std::io::{Read, Write};
-use tokio::io::AsyncReadExt;
 use walkdir::WalkDir;
 
 pub async fn install(packages: Vec<String>) {
