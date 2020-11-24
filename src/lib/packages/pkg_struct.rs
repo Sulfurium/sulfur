@@ -18,7 +18,7 @@ pub struct PKG {
     pub architecture: Architecture,
     pub optional_dependence: Option<Vec<String>>,
     pub installed: Option<bool>,
-    pub file: Option<Vec<String>>
+    pub file: Option<Vec<String>>,
 }
 
 impl PKG {
@@ -36,7 +36,7 @@ impl PKG {
             architecture: Architecture::X8664,
             optional_dependence: Some(Vec::new()),
             installed: Some(false),
-            file: None
+            file: None,
         }
     }
     pub fn get_name(&self) -> String {

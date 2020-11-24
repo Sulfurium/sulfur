@@ -2,8 +2,8 @@ use crate::lib::db::insert::insert;
 use crate::lib::packages::pkg_struct::PKG;
 use async_std::io::ReadExt;
 use std::io::{Read, Write};
-use walkdir::WalkDir;
 use tokio::io::AsyncReadExt;
+use walkdir::WalkDir;
 
 pub async fn install(packages: Vec<String>) {
     for package in packages {
@@ -25,7 +25,10 @@ pub async fn install_package(package: String) {
             }
         }
 
-        if install_file_of_package(package.clone()).await.expect("Error") {
+        if install_file_of_package(package.clone())
+            .await
+            .expect("Error")
+        {
             println!("{} was installed", package.clone());
         }
     }

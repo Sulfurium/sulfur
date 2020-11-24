@@ -1,11 +1,11 @@
-use crate::lib::packages::pkg_struct::{PKG, Licenses, Architecture};
 use crate::lib::db::conn::conn;
+use crate::lib::packages::pkg_struct::{Architecture, Licenses, PKG};
 
 use sqlx::Row;
 
+use std::str::FromStr;
 use tokio::stream::StreamExt;
 use toml::value::Datetime;
-use std::str::FromStr;
 
 pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
     let mut conn = conn().await;
@@ -75,6 +75,5 @@ pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
 }
 
 pub async fn query_file(name: String) -> Vec<String> {
-
     Vec::new()
 }

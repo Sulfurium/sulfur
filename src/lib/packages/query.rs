@@ -1,8 +1,5 @@
-
-use crate::lib::packages::pkg_struct::{PKG};
+use crate::lib::packages::pkg_struct::PKG;
 use sqlx::Row;
-
-
 
 use crate::lib::db::query::query_package;
 use walkdir::WalkDir;
@@ -37,7 +34,10 @@ pub fn format(vec_pkg: Vec<PKG>) {
 
 pub async fn query_folder(name: String) -> Vec<Vec<String>> {
     let mut vec: Vec<Vec<String>> = Vec::new();
-    for entry in WalkDir::new(format!("./temp/{}", name)).into_iter().filter_map(|e| e.ok()) {
+    for entry in WalkDir::new(format!("./temp/{}", name))
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
         if entry.metadata().expect("Err").is_file() {
             let contain = ["usr", "home", "bin"];
             let mut to_push = Vec::new();
