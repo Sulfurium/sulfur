@@ -18,6 +18,7 @@ pub struct PKG {
     pub architecture: Architecture,
     pub optional_dependence: Option<Vec<String>>,
     pub installed: Option<bool>,
+    pub file: Option<Vec<String>>
 }
 
 impl PKG {
@@ -35,6 +36,7 @@ impl PKG {
             architecture: Architecture::X8664,
             optional_dependence: Some(Vec::new()),
             installed: Some(false),
+            file: None
         }
     }
     pub fn get_name(&self) -> String {
@@ -81,6 +83,9 @@ impl PKG {
     }
     pub fn get_installed(&self) -> Option<bool> {
         self.installed
+    }
+    pub fn get_files(&self) -> Option<Vec<String>> {
+        self.file.clone()
     }
 
     pub fn deps_format(&self) -> String {
@@ -158,16 +163,20 @@ impl PKG {
     pub fn set_installed_from_i64(&mut self, value: i64) -> Result<&mut PKG, std::io::Error> {
         if value == 0 {
             self.set_installed(false);
-            return Ok(self);
+            Ok(self)
         } else if value == 1 {
             self.set_installed(true);
-            return Ok(self);
+            Ok(self)
         } else {
-            return Err(std::io::Error::new(
+            Err(std::io::Error::new(
                 ErrorKind::InvalidData,
                 "Can't parse value",
-            ));
+            ))
         }
+    }
+    pub fn set_files(&mut self, files: Vec<String>) -> &mut PKG {
+        self.file = Some(files);
+        self
     }
 }
 #[derive(Debug, Deserialize, Clone)]

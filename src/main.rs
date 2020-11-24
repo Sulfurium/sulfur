@@ -6,17 +6,19 @@ use lib::{
 };
 use structopt::StructOpt;
 
+use crate::lib::db::query::query_package;
+
 mod lib;
 
 #[tokio::main]
 async fn main() {
-    default().await.expect("Error");
-
     if users::get_current_uid() == 0 {
+        default().await.expect("Error");
+
         match Cli::from_args() {
             Cli::Install { packages } => install(packages).await,
             Cli::Query { packages } => query(packages).await,
-            Cli::Remove { packages } => remove(packages),
+            Cli::Remove { packages } => remove(packages).await,
         };
     } else {
         print!("You not are in root ! Please rerun this command with root account or sudo");

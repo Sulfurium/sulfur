@@ -3,6 +3,7 @@ use crate::lib::packages::pkg_struct::PKG;
 use async_std::io::ReadExt;
 use std::io::{Read, Write};
 use walkdir::WalkDir;
+use tokio::io::AsyncReadExt;
 
 pub async fn install(packages: Vec<String>) {
     for package in packages {
@@ -12,14 +13,19 @@ pub async fn install(packages: Vec<String>) {
 
 pub async fn install_package(package: String) {
     insert(package.clone()).await;
-    let struck_pkg: PKG = get_config_of_package(package.clone());
-    if struck_pkg.get_name() == "" {
+    let struct_pkg: PKG = get_config_of_package(package.clone());
+    if struct_pkg.get_name() == "" {
         print!("I can't install Package");
     } else {
-        let package_result = install_file_of_package(package.clone())
-            .await
-            .expect("Error");
-        if package_result == true {
+        if let Some(deps) = struct_pkg.dependence {
+            for d in deps {
+                if install_file_of_package(d.clone()).await.expect("Error") {
+                    println!("{} was installed", d.clone());
+                }
+            }
+        }
+
+        if install_file_of_package(package.clone()).await.expect("Error") {
             println!("{} was installed", package.clone());
         }
     }
@@ -49,7 +55,7 @@ pub async fn move_file(package_name: String, path: String) -> std::io::Result<bo
     source_file.read_to_end(&mut buf).await?;
     std::fs::File::create(dest_path.to_string())
         .unwrap()
-        .write(buf.as_slice())
+        .write_all(buf.as_slice())
         .expect("Error");
     Ok(true)
 }
@@ -82,9 +88,9 @@ pub async fn analyze_folder(path: String) -> Vec<Vec<String>> {
             let contain = ["usr", "home", "bin"];
             let mut to_push = Vec::new();
             let mut push = false;
-            let split = entry.path().to_str().expect("Error").split("/");
+            let split = entry.path().to_str().expect("Error").split('/');
             for e in split.into_iter() {
-                if push == true {
+                if push {
                     to_push.push(e.to_string());
                 }
                 if contain.contains(&e) {
