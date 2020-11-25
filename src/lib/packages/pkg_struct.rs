@@ -13,6 +13,7 @@ pub struct PKG {
     pub packager: String,
     pub date: Datetime,
     pub license: Licenses,
+    pub source: Option<Source>,
     pub dependence: Option<Vec<String>>,
     pub architecture: Architecture,
     pub optional_dependence: Option<Vec<String>>,
@@ -31,6 +32,7 @@ impl PKG {
             packager: "".to_string(),
             date: Datetime::from_str("1979-05-27T07:32:00-08:00").expect("Error"),
             license: Licenses::MIT,
+            source: Some(Source::Repo),
             dependence: Some(Vec::new()),
             architecture: Architecture::X8664,
             optional_dependence: Some(Vec::new()),
@@ -61,6 +63,9 @@ impl PKG {
     }
     pub fn get_license(&self) -> Licenses {
         self.license.clone()
+    }
+    pub fn get_source(&self) -> Option<Source> {
+        self.source.clone()
     }
     pub fn format_license(&self) -> String {
         self.license.format()
@@ -246,4 +251,9 @@ impl Architecture {
             )),
         }
     }
+}
+#[derive(Debug, Clone, Copy, Deserialize)]
+pub enum Source {
+    Repo,
+    Appimage
 }
