@@ -255,5 +255,5 @@ impl Architecture {
 #[derive(Debug, Clone, Copy, Deserialize)]
 pub enum Source {
     Repo,
-    Appimage
+    Appimage,
 }

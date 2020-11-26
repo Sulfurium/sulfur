@@ -1,5 +1,5 @@
-use crate::lib::packages::pkg_struct::PKG;
 use crate::lib::db::query::query_package;
+use crate::lib::packages::pkg_struct::PKG;
 use walkdir::WalkDir;
 
 pub async fn query(packages: Vec<String>) {
