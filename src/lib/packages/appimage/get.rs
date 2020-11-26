@@ -1,4 +1,4 @@
-pub async fn get_appimage() {
+pub async fn _get_appimage() {
     let ee = reqwest::Client::new()
         .get("https://dl.bintray.com/probono/AppImages/")
         .send()
