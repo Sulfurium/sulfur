@@ -7,7 +7,6 @@ pub async fn query(packages: Vec<String>) {
         println!("No packages names given")
     } else {
         for package in packages {
-            println!("{:?}", query_folder(package.clone()).await);
             format(query_package(package).await.expect("Error"));
         }
     }
@@ -24,7 +23,7 @@ pub fn format(vec_pkg: Vec<PKG>) {
             }
             println!(
                 "{} {}-{} {} \n{}",
-                pkg.name, pkg.version, pkg.subversion, install, pkg.description
+                pkg.get_name(), pkg.get_version(), pkg.get_subversion(), install, vec_to_string(pkg.get_dependence())
             )
         }
     }
@@ -56,4 +55,13 @@ pub async fn query_folder(name: String) -> Vec<Vec<String>> {
         }
     }
     vec
+}
+
+fn vec_to_string(vec: Vec<String>) -> String {
+    let mut string = String::new();
+    for i in vec {
+        string.push_str(i.as_str());
+    }
+
+    string
 }
