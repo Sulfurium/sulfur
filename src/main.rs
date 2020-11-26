@@ -6,9 +6,12 @@ use lib::{
 };
 use structopt::StructOpt;
 mod lib;
+use async_std::task::{self, spawn};
+use task::block_on;
 
 fn main() {
-    async_std::task::spawn(
+    block_on(
+    spawn(
         async {
             if users::get_current_uid() == 0 {
                 default().await.expect("Error");
@@ -22,6 +25,6 @@ fn main() {
                 print!("You not are in root ! Please rerun this command with root account or sudo");
             }
         }
-    );
+    ));
 
 }
