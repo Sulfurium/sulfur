@@ -5,6 +5,7 @@ use toml::value::Datetime;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct PKG {
+    pub id: Option<i64>,
     pub name: String,
     pub version: f64,
     pub subversion: i64,
@@ -24,6 +25,7 @@ pub struct PKG {
 impl PKG {
     pub fn new() -> PKG {
         PKG {
+            id: Some(0),
             name: "".to_string(),
             version: 0.0,
             subversion: 0,
@@ -91,7 +93,9 @@ impl PKG {
     pub fn get_files(&self) -> Option<Vec<String>> {
         self.file.clone()
     }
-
+    pub fn get_id(&self) -> Option<i64> {
+        self.id.clone()
+    }
     pub fn deps_format(&self) -> String {
         let mut string_result = String::new();
 
@@ -180,6 +184,10 @@ impl PKG {
     }
     pub fn set_files(&mut self, files: Vec<String>) -> &mut PKG {
         self.file = Some(files);
+        self
+    }
+    pub fn set_id(&mut self, id: i64) -> &mut PKG {
+        self.id = Some(id);
         self
     }
 }
