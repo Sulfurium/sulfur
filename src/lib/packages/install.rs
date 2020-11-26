@@ -1,4 +1,4 @@
-use crate::lib::db::insert::insert;
+use crate::lib::db::{insert::insert, update::update_install_from_name};
 use crate::lib::packages::pkg_struct::PKG;
 use async_std::io::ReadExt;
 use std::io::{Read, Write};
@@ -30,6 +30,7 @@ pub async fn install_package(package: String) {
         {
             println!("{} was installed", package.clone());
         }
+        update_install_from_name(package.clone(), true).await;
     }
 }
 
