@@ -1,6 +1,6 @@
 use crate::lib::packages::pkg_struct::PKG;
 use std::path::PathBuf;
-use tokio::stream::StreamExt;
+use async_std::stream::StreamExt;
 
 pub async fn _read_package(path: PathBuf) -> std::io::Result<PKG> {
     let pkg = PKG::new();

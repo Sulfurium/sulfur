@@ -1,11 +1,9 @@
 use crate::lib::db::conn::conn;
 use crate::lib::packages::pkg_struct::{Architecture, Licenses, PKG};
-
-use sqlx::Row;
-
 use std::str::FromStr;
-use tokio::stream::StreamExt;
 use toml::value::Datetime;
+use futures::stream::TryStreamExt;
+use sqlx::Row;
 
 pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
     let mut conn = conn().await;
