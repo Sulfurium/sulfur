@@ -265,3 +265,12 @@ pub enum Source {
     Repo,
     Appimage,
 }
+
+impl Source {
+    pub fn format(&self) -> String {
+        match &self {
+            Source::Repo => {"Repo".to_string()}
+            Source::Appimage => {"AppImage".to_string()}
+        }
+    }
+}

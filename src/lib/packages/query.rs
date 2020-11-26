@@ -18,12 +18,12 @@ pub fn format(vec_pkg: Vec<PKG>) {
     } else {
         for pkg in vec_pkg {
             let mut install = String::new();
-            if pkg.installed.unwrap() {
+            if pkg.get_installed().unwrap() {
                 install.push_str("(Installed)")
             }
             println!(
-                "{} {}-{} {} \n{}",
-                pkg.get_name(), pkg.get_version(), pkg.get_subversion(), install, vec_to_string(pkg.get_dependence())
+                "{} {}-{} ({}) from {} {} \n{} \n[{}]",
+                pkg.get_name(), pkg.get_version(), pkg.get_subversion(),pkg.format_license(),pkg.get_source().unwrap().format(), install, pkg.get_description(),vec_to_string(pkg.get_dependence())
             )
         }
     }
