@@ -18,8 +18,8 @@ pub async fn create() {
         dependence              TEXT NOT NULL,
         architecture            TEXT NOT NULL,
         optional_dependence     TEXT,
-        installed               INTEGER NOT NULL
-        file:                   TEXT
+        installed               INTEGER NOT NULL,
+        file                    TEXT
     )",
     )
     .execute(&mut conn)
