@@ -112,11 +112,9 @@ impl PKG {
     pub fn opt_dep_format(&self) -> String {
         let mut string_result = String::new();
         string_result.push('[');
-        if let Some(opt_dep) = self.optional_dependence.clone() {
-            for od in opt_dep {
+            for od in self.get_optional_dependence().clone() {
                 string_result.push_str(format!("{},", od).as_ref())
             }
-        }
         string_result.push(']');
         string_result
     }
