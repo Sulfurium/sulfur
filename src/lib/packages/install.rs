@@ -1,7 +1,8 @@
 use crate::lib::db::{insert::insert, update::update_install_from_name};
 use crate::lib::packages::pkg_struct::PKG;
-use async_std::io::ReadExt;
-use std::io::{Read, Write};
+use async_std::{io::ReadExt};
+use indicatif::ProgressBar;
+use std::{time::Duration, io::{Read, Write}, thread};
 use walkdir::WalkDir;
 
 pub async fn install(packages: Vec<String>) {
@@ -68,7 +69,10 @@ async fn check_path(package_name: String, paths: Vec<Vec<String>>) {
         let mut n = 1;
         let mut string_path = String::new();
         let lenght = path.len();
+        let wait = (1.00 / lenght.to_string().parse::<f64>().unwrap_or_default() * 100.0).to_string().split(".").collect::<Vec<&str>>()[1].to_string().split_at(2).0.parse::<u64>().unwrap() + 100;
+        let pb = ProgressBar::new(lenght.clone().to_string().parse().unwrap());
         for p in path {
+            pb.inc(1);
             string_path.push_str(format!("/{}", p).as_str());
             if n == lenght {
                 move_file(package_name.clone(), string_path.clone())
@@ -81,7 +85,9 @@ async fn check_path(package_name: String, paths: Vec<Vec<String>>) {
                 }
             }
             n += 1;
-        }
+            thread::sleep(Duration::from_millis(wait));
+        }        
+        pb.finish_and_clear();
     }
 }
 pub async fn analyze_folder(path: String) -> Vec<Vec<String>> {
