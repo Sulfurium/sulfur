@@ -14,6 +14,7 @@ futures = "0.3.8"
 serde =  { version = "1.0.118", features = ["derive"] }
 toml = "0.5.7"
 
+runas = "0.2.1"
 walkdir = "2.3.1"
 users = "0.11.0"
 
