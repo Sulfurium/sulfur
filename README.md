@@ -1,6 +1,8 @@
 ## Sulfur
 
-Sulfur is the package manager of Sulfurium.
+[![Linux](https://github.com/Sulfurium/Sulfur/workflows/Linux/badge.svg)](https://github.com/Sulfurium/Sulfur/actions)
+
+Sulfur is the package manager of SulfuriumOs.
 
 Sulfur is written in Rust
 
