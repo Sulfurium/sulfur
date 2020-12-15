@@ -4,6 +4,6 @@ Sulfur is the package manager of Sulfurium.
 
 Sulfur is written in Rust
 
-Under GLPv2 License
+Under GLPv3 License
 
 Sulfur Team - 2020
