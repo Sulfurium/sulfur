@@ -23,11 +23,11 @@ async fn default_folder() -> std::io::Result<()> {
                 if read_dir("/etc/sulfur/repo.d").await.is_err() {
                     match fs::create_dir("/etc/sulfur/repo.d").await {
                         Ok(_) => {}
-                        Err(e) => println!("{}", e),
+                        Err(e) => println!("Error: {}", e),
                     }
                 };
             }
-            Err(e) => println!("{}", e),
+            Err(e) => println!("Error: {}", e),
         }
     }
     if read_dir("/tmp/sulfur/").await.is_err() {
