@@ -1,9 +1,9 @@
 use crate::lib::db::conn::conn;
 use crate::lib::packages::pkg_struct::{Architecture, Licenses, PKG};
-use std::str::FromStr;
-use toml::value::Datetime;
 use futures::stream::TryStreamExt;
 use sqlx::Row;
+use std::str::FromStr;
+use toml::value::Datetime;
 
 pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
     let mut conn = conn().await;
@@ -65,11 +65,23 @@ pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
 
         pkg.set_installed_from_i64(row.try_get::<i64, &str>("installed").expect("Error"))
             .expect("Error");
-        
-        pkg.set_files(string_to_vec(row.try_get::<&str, &str>("file").expect("Error").to_string()));
-        pkg.set_dependence(string_to_vec(row.try_get::<&str, &str>("dependence").expect("Error").to_string()));
-        pkg.set_optional_dependence(string_to_vec(row.try_get::<&str, &str>("optional_dependence").expect("Error").to_string()));
-        
+
+        pkg.set_files(string_to_vec(
+            row.try_get::<&str, &str>("file")
+                .expect("Error")
+                .to_string(),
+        ));
+        pkg.set_dependence(string_to_vec(
+            row.try_get::<&str, &str>("dependence")
+                .expect("Error")
+                .to_string(),
+        ));
+        pkg.set_optional_dependence(string_to_vec(
+            row.try_get::<&str, &str>("optional_dependence")
+                .expect("Error")
+                .to_string(),
+        ));
+
         vec_pkg.push(pkg);
     }
 
@@ -83,8 +95,7 @@ pub fn string_to_vec(string: String) -> Vec<String> {
 
     for v in split {
         result.push(v.to_string());
-    };
+    }
 
     result
-
 }

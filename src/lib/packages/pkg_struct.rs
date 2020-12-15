@@ -112,9 +112,9 @@ impl PKG {
     pub fn opt_dep_format(&self) -> String {
         let mut string_result = String::new();
         string_result.push('[');
-            for od in self.get_optional_dependence().clone() {
-                string_result.push_str(format!("{},", od).as_ref())
-            }
+        for od in self.get_optional_dependence().clone() {
+            string_result.push_str(format!("{},", od).as_ref())
+        }
         string_result.push(']');
         string_result
     }
@@ -267,8 +267,8 @@ pub enum Source {
 impl Source {
     pub fn format(&self) -> String {
         match &self {
-            Source::Repo => {"Repo".to_string()}
-            Source::Appimage => {"AppImage".to_string()}
+            Source::Repo => "Repo".to_string(),
+            Source::Appimage => "AppImage".to_string(),
         }
     }
 }

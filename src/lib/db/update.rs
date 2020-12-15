@@ -2,9 +2,16 @@ use super::{conn::conn, query::query_package};
 
 pub async fn update_install(id: i64, install: bool) {
     let mut conn = conn().await;
-    let query = format!("UPDATE Packages SET installed={} WHERE id={};", install.to_string(), id);
+    let query = format!(
+        "UPDATE Packages SET installed={} WHERE id={};",
+        install.to_string(),
+        id
+    );
 
-    sqlx::query(query.as_str()).execute(&mut conn).await.expect("Error");
+    sqlx::query(query.as_str())
+        .execute(&mut conn)
+        .await
+        .expect("Error");
 }
 
 pub async fn update_install_from_name(name: String, install: bool) {
