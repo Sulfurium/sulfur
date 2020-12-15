@@ -12,7 +12,7 @@ pub struct PKG {
     pub description: String,
     pub url: String,
     pub packager: String,
-    pub date: Datetime,
+    pub date: Option<Datetime>,
     pub license: Licenses,
     pub source: Option<Source>,
     pub dependence: Option<Vec<String>>,
@@ -32,7 +32,7 @@ impl PKG {
             description: "".to_string(),
             url: "".to_string(),
             packager: "".to_string(),
-            date: Datetime::from_str("1979-05-27T07:32:00-08:00").expect("Error"),
+            date: Some(Datetime::from_str("1979-05-27T07:32:00-08:00").expect("Error")),
             license: Licenses::MIT,
             source: Some(Source::Repo),
             dependence: Some(Vec::new()),
@@ -60,7 +60,7 @@ impl PKG {
     pub fn get_packager(&self) -> String {
         self.packager.clone()
     }
-    pub fn get_date(&self) -> Datetime {
+    pub fn get_date(&self) -> Option<Datetime> {
         self.date.clone()
     }
     pub fn get_license(&self) -> Licenses {
@@ -143,7 +143,7 @@ impl PKG {
         self
     }
     pub fn set_date(&mut self, date: Datetime) -> &mut PKG {
-        self.date = date;
+        self.date = Some(date);
         self
     }
     pub fn set_license(&mut self, license: Licenses) -> &mut PKG {
