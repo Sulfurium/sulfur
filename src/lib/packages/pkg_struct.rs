@@ -90,7 +90,7 @@ impl PKG {
     pub fn get_installed(&self) -> Option<bool> {
         self.installed
     }
-    pub fn get_files(&self) -> Option<Vec<String>> {
+    pub fn _get_files(&self) -> Option<Vec<String>> {
         self.file.clone()
     }
     pub fn get_id(&self) -> Option<i64> {
