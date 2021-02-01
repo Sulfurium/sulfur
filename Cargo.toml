@@ -11,7 +11,7 @@ reqwest = "0.10.9"
 async-std = "1.9.0"
 futures = "0.3.8"
 
-serde =  { version = "1.0.118", features = ["derive"] }
+serde =  { version = "1.0.123", features = ["derive"] }
 toml = "0.5.8"
 
 runas = "0.2.1"
