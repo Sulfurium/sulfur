@@ -53,5 +53,17 @@ async fn default_file() -> std::io::Result<()> {
             Err(e) => println!("{}", e),
         }
     }
+    if read("/etc/sulfur/repo.d/default").await.is_err() {
+        match fs::write("/etc/sulfur/repo.d/default", "").await {
+            Ok(_) => println!("Ok"),
+            Err(e) => println!("{}", e),
+        }
+    }
+    if read("/etc/sulfur/hook.d/default").await.is_err() {
+        match fs::write("/etc/sulfur/hook.d/default", "").await {
+            Ok(_) => println!("Ok"),
+            Err(e) => println!("{}", e),
+        }
+    }
     Ok(())
 }
