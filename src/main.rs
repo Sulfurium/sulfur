@@ -13,7 +13,6 @@ fn main() {
     block_on(spawn(async {
         if users::get_current_uid() == 0 {
             default().await.expect("Error");
-
             match Cli::from_args() {
                 Cli::Install { packages } => install(packages).await,
                 Cli::Query { packages } => query(packages).await,
