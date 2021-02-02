@@ -1,19 +1,17 @@
-use runas::Command;
+pub async fn decompression(from: String, to: String) -> bool {
+    let mut decoder = {
+        let file = std::fs::File::open(from.clone()).unwrap();
+        zstd::Decoder::new(file).unwrap()
+    };
 
-pub async fn _decompression(file: String, folder: String) -> bool {
-    if async_std::fs::read_dir(folder.clone()).await.is_err() {
-        async_std::fs::create_dir(folder.clone())
-            .await
-            .expect("Cannot create folder");
-    }
-    match Command::new("tar")
-        .arg("-xf")
-        .arg(file)
-        .arg("-C")
-        .arg(folder.clone())
-        .status()
-    {
-        Ok(_) => true,
-        Err(_) => false,
-    }
+    let name = from.trim_end_matches(".zst");
+    let mut target = std::fs::File::create(name).unwrap();
+
+    std::io::copy(&mut decoder, &mut target).unwrap();
+    let e = async_std::fs::File::open(name).await.unwrap();
+    println!("{:?}", e);
+    let ar = async_tar::Archive::new(e);
+    ar.unpack(to).await.unwrap();
+
+    true
 }
