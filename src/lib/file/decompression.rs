@@ -1,4 +1,7 @@
-pub async fn decompression(from: String, to: String) -> bool {
+use std::path::Path;
+
+pub async fn decompression<P: AsRef<Path>>(from: String, to: P) {
+    /* ZSTD DECOMPRESSION */
     let mut decoder = {
         let file = std::fs::File::open(from.clone()).unwrap();
         zstd::Decoder::new(file).unwrap()
@@ -8,10 +11,10 @@ pub async fn decompression(from: String, to: String) -> bool {
     let mut target = std::fs::File::create(name).unwrap();
 
     std::io::copy(&mut decoder, &mut target).unwrap();
-    let e = async_std::fs::File::open(name).await.unwrap();
-    println!("{:?}", e);
-    let ar = async_tar::Archive::new(e);
-    ar.unpack(to).await.unwrap();
+    
+    /* TAR UNARCHIVAGE */
 
-    true
+    let e = std::fs::File::open(name).unwrap();
+    let mut ar = tar::Archive::new(e);
+    ar.unpack(to).unwrap();
 }
