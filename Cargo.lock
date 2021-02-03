@@ -192,20 +192,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "async-tar"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cb619eae01ab289095debb1ff7c02710d5124c20edde1b2eca926572a34c3998"
-dependencies = [
- "async-std",
- "filetime",
- "libc",
- "pin-project 0.4.27",
- "redox_syscall 0.1.57",
- "xattr",
-]
-
-[[package]]
 name = "async-task"
 version = "4.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1858,7 +1844,6 @@ name = "sulfur"
 version = "0.1.0"
 dependencies = [
  "async-std",
- "async-tar",
  "futures",
  "indicatif",
  "reqwest",
@@ -1866,6 +1851,7 @@ dependencies = [
  "serde",
  "sqlx",
  "structopt",
+ "tar",
  "toml",
  "users",
  "walkdir",
@@ -1888,6 +1874,17 @@ name = "tap"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "36474e732d1affd3a6ed582781b3683df3d0563714c59c39591e8ff707cf078e"
+
+[[package]]
+name = "tar"
+version = "0.4.32"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0313546c01d59e29be4f09687bcb4fb6690cec931cc3607b6aec7a0e417f4cc6"
+dependencies = [
+ "filetime",
+ "libc",
+ "xattr",
+]
 
 [[package]]
 name = "tempfile"
