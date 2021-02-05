@@ -1,13 +1,11 @@
 use crate::lib::default::default::default;
 use crate::lib::packages::install::install;
-use lib::{
-    cli::cli::Cli,
-    packages::{query::query, remove::remove},
-};
+use lib::{cli::cli::Cli, packages::{query::query, remove::remove}};
 use structopt::StructOpt;
 mod lib;
 use async_std::task::{self, spawn};
 use task::block_on;
+use crate::lib::repo::sync;
 
 fn main() {
     block_on(spawn(async {
@@ -17,6 +15,7 @@ fn main() {
                 Cli::Install { packages } => install(packages).await,
                 Cli::Query { packages } => query(packages).await,
                 Cli::Remove { packages } => remove(packages).await,
+                Cli::Sync => sync().await,
             };
         } else {
             println!("You not are in root ! Please rerun this command with root account or sudo");
