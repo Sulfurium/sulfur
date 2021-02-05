@@ -23,4 +23,6 @@ pub enum Cli {
         #[structopt()]
         packages: Vec<String>,
     },
+    /// Search a repo
+    Sync
 }
