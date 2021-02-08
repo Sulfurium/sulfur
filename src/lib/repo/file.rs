@@ -5,7 +5,7 @@ use toml::Value;
 use std::collections::BTreeMap;
 
 
-pub async fn get_repo_from_repod() -> Vec<(String, String)> {
+pub async fn get_repo_from_repod_formatted() -> Vec<(String, String)> {
     let files = get_file_from_repod().await;
     let mut result = Vec::new();
     for file in files {
@@ -18,6 +18,20 @@ pub async fn get_repo_from_repod() -> Vec<(String, String)> {
 
     result
 }
+
+pub async fn get_repo_from_repod() -> Vec<Value> {
+    let files = get_file_from_repod().await;
+    let mut result = Vec::new();
+    for file in files {
+        let e = read_to_string(file).unwrap();
+        let value = e.as_str().parse::<Value>().unwrap();
+        result.push(value);
+    }
+
+    result
+}
+
+
 
 pub async fn get_file_from_repod() -> Vec<PathBuf> {
     let mut result = Vec::new();
