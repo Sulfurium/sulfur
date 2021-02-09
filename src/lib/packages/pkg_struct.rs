@@ -67,7 +67,7 @@ impl PKG {
         self.license.clone()
     }
     pub fn get_source(&self) -> Option<Source> {
-        self.source.clone()
+        self.source
     }
     pub fn format_license(&self) -> String {
         self.license.format()
@@ -94,7 +94,7 @@ impl PKG {
         self.file.clone()
     }
     pub fn get_id(&self) -> Option<i64> {
-        self.id.clone()
+        self.id
     }
     pub fn deps_format(&self) -> String {
         let mut string_result = String::new();
@@ -212,7 +212,7 @@ impl Licenses {
             Licenses::NOLICENSE => String::from("NO_LICENSE"),
         }
     }
-    pub fn from_str<'a>(str: &str) -> Result<Licenses, std::io::Error> {
+    pub fn from_str(str: &str) -> Result<Licenses, std::io::Error> {
         match str.to_uppercase().as_str() {
             "MIT" => Ok(Licenses::MIT),
             "GPL" => Ok(Licenses::GPL),

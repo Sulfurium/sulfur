@@ -50,7 +50,7 @@ pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
 
         pkg.set_date(
             Datetime::from_str(row.try_get::<&str, &str>("date").expect("Error"))
-                .unwrap_or(Datetime::from_str("1979-05-27T07:32:00-08:00").unwrap()),
+                .unwrap_or_else(|_| Datetime::from_str("1979-05-27T07:32:00-08:00").unwrap()),
         );
 
         pkg.set_license(
@@ -91,7 +91,7 @@ pub async fn query_package(package: String) -> std::io::Result<Vec<PKG>> {
 pub fn string_to_vec(string: String) -> Vec<String> {
     let string_replace = string.replace("[", "").replace("]", "");
     let mut result: Vec<String> = Vec::new();
-    let split: Vec<&str> = string_replace.split(",").collect();
+    let split: Vec<&str> = string_replace.split(',').collect();
 
     for v in split {
         result.push(v.to_string());

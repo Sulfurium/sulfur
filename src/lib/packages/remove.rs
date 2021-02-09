@@ -26,16 +26,14 @@ pub fn format_path(paths: Vec<Vec<String>>) -> Vec<String> {
     for path in paths {
         let mut format_path = String::new();
         let lenght = path.len();
-        let mut n = 0;
-        for p in path {
+        for (n, p) in path.into_iter().enumerate() {
             if n == lenght - 1 {
-                format_path.push_str(format!("{}", p).as_str());
+                format_path.push_str(p.as_str());
             } else if n == 0 {
                 format_path.push_str(format!("/{}/", p).as_str());
             } else {
                 format_path.push_str(format!("{}/", p).as_str());
             }
-            n += 1;
         }
         vpath.push(format_path)
     }

@@ -19,7 +19,7 @@ pub async fn get_repo_from_repod_formatted() -> Vec<(String, String)> {
     result
 }
 
-pub async fn get_repo_from_repod() -> Vec<Value> {
+pub async fn _get_repo_from_repod() -> Vec<Value> {
     let files = get_file_from_repod().await;
     let mut result = Vec::new();
     for file in files {

@@ -44,7 +44,7 @@ pub fn get_config_of_package(package: String) -> PKG {
     let mut pkg_info = String::new();
     let mut file = std::fs::File::open(path).expect("Error");
     std::fs::File::read_to_string(&mut file, &mut pkg_info).expect("Error");
-    toml::from_str(pkg_info.as_str()).unwrap_or(PKG::new())
+    toml::from_str(pkg_info.as_str()).unwrap_or_else(|_| PKG::new())
 }
 
 pub async fn install_file_of_package(package: String) -> std::io::Result<bool> {
@@ -75,7 +75,7 @@ async fn check_path(package_name: String, paths: Vec<Vec<String>>) {
         let lenght = path.len();
         let wait = (1.00 / lenght.to_string().parse::<f64>().unwrap_or_default() * 100.0)
             .to_string()
-            .split(".")
+            .split('.')
             .collect::<Vec<&str>>()[1]
             .to_string()
             .split_at(2)
