@@ -37,6 +37,11 @@ pub async fn repo(action: Action, repo_name: String, url: String) {
         Action::Error => {
             println!("Error");
         }
+        Action::List => {
+            for i in get_repo_from_repod_formatted().await {
+                println!("{} => {}", i.0, i.1);
+            }
+        }
     }
 }
 

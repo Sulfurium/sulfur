@@ -31,7 +31,7 @@ pub enum Cli {
         #[structopt()]
         action: Action,
 
-        #[structopt()]
+        #[structopt(default_value = "")]
         repo_name: String,
 
         #[structopt(default_value = "")]
@@ -43,6 +43,7 @@ pub enum Action {
     Add,
     Del,
     Update,
+    List,
     Error
 }
 
@@ -60,6 +61,9 @@ impl FromStr for Action {
            "update" => {
                Ok(Self::Update)
            }
+           "list" => {
+            Ok(Self::List)
+            }
            &_ => {
             Err(String::new())
            }
