@@ -1,5 +1,5 @@
-use structopt::StructOpt;
 use std::str::FromStr;
+use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
 #[structopt(
@@ -35,8 +35,8 @@ pub enum Cli {
         repo_name: String,
 
         #[structopt(default_value = "")]
-        url: String
-    }
+        url: String,
+    },
 }
 #[derive(Debug, StructOpt)]
 pub enum Action {
@@ -44,29 +44,19 @@ pub enum Action {
     Del,
     Update,
     List,
-    Error
+    Error,
 }
 
 impl FromStr for Action {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-       match s.to_lowercase().as_str() {
-           "add" => {
-                Ok(Self::Add)
-           }
-           "del" => {
-               Ok(Self::Del)
-           }
-           "update" => {
-               Ok(Self::Update)
-           }
-           "list" => {
-            Ok(Self::List)
-            }
-           &_ => {
-            Err(String::new())
-           }
-       }
+        match s.to_lowercase().as_str() {
+            "add" => Ok(Self::Add),
+            "del" => Ok(Self::Del),
+            "update" => Ok(Self::Update),
+            "list" => Ok(Self::List),
+            &_ => Err(String::new()),
+        }
     }
 }

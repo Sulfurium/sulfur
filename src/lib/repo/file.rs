@@ -1,9 +1,8 @@
-use futures::StreamExt;
 use async_std::path::PathBuf;
+use futures::StreamExt;
+use std::collections::BTreeMap;
 use std::fs::read_to_string;
 use toml::Value;
-use std::collections::BTreeMap;
-
 
 pub async fn get_repo_from_repod_formatted() -> Vec<(String, String)> {
     let files = get_file_from_repod().await;
@@ -30,8 +29,6 @@ pub async fn _get_repo_from_repod() -> Vec<Value> {
 
     result
 }
-
-
 
 pub async fn get_file_from_repod() -> Vec<PathBuf> {
     let mut result = Vec::new();
@@ -64,13 +61,11 @@ impl TableToBTree for Value {
                     for (e, i) in e.iter() {
                         btreemap.insert(e.to_string(), i.get("repo").unwrap().to_string());
                     }
-
                 }
             };
             Some(btreemap)
         } else {
             None
         }
-
     }
 }

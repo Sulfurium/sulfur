@@ -23,9 +23,11 @@ pub fn _get_list_of_file(folder: String) -> Vec<String> {
     for res in read_dir {
         let entry = res.unwrap();
         if entry.metadata().unwrap().is_dir() {
-            result.append(&mut _get_list_of_file(entry.path().to_str().unwrap().to_string()));
+            result.append(&mut _get_list_of_file(
+                entry.path().to_str().unwrap().to_string(),
+            ));
         } else {
-            result.push( entry.path().to_str().unwrap().to_string());
+            result.push(entry.path().to_str().unwrap().to_string());
         }
     }
     result

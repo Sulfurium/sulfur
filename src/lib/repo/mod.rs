@@ -1,5 +1,5 @@
-pub mod sync;
 pub mod file;
+pub mod sync;
 pub mod update_repod;
 
 use crate::lib::repo::file::get_repo_from_repod_formatted;

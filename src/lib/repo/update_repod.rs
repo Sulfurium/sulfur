@@ -11,20 +11,23 @@ pub async fn repo(action: Action, repo_name: String, url: String) {
                     return;
                 }
             }
-             write_repo_to_repod(repo_name, url).await;
+            write_repo_to_repod(repo_name, url).await;
         }
         Action::Del => {
             for i in repo {
                 if i.0 == repo_name {
-                    match async_std::fs::remove_file(format!("/etc/sulfur/repo.d/{}", repo_name)).await {
-                        Ok(_) => {println!("Repo has been delete !");},
+                    match async_std::fs::remove_file(format!("/etc/sulfur/repo.d/{}", repo_name))
+                        .await
+                    {
+                        Ok(_) => {
+                            println!("Repo has been delete !");
+                        }
                         Err(e) => {
                             println!("Error : {}", e.to_string());
                         }
                     }
                 }
             }
-
         }
         Action::Update => {
             for i in repo {
@@ -32,7 +35,6 @@ pub async fn repo(action: Action, repo_name: String, url: String) {
                     write_repo_to_repod(repo_name.clone(), url.clone()).await;
                 }
             }
-
         }
         Action::Error => {
             println!("Error");
@@ -47,9 +49,18 @@ pub async fn repo(action: Action, repo_name: String, url: String) {
 
 pub async fn write_repo_to_repod(name: String, repo: String) {
     let towrite = format!("[{}] \nrepo = \"{}\"", name, repo);
-    if name.is_empty() {println!("Name is empty"); return;}
-    if repo.is_empty() {println!("Url of repo is empty"); return;}
-    if async_std::fs::write(format!("/etc/sulfur/repo.d/{}", name), towrite).await.is_ok() {
+    if name.is_empty() {
+        println!("Name is empty");
+        return;
+    }
+    if repo.is_empty() {
+        println!("Url of repo is empty");
+        return;
+    }
+    if async_std::fs::write(format!("/etc/sulfur/repo.d/{}", name), towrite)
+        .await
+        .is_ok()
+    {
         println!("Repo ({}) has been added", name);
     } else {
         println!("Error on file")
