@@ -1,6 +1,6 @@
 use std::path::Path;
 
-pub async fn _decompression<P: AsRef<Path>>(from: String, to: P) {
+pub async fn decompression<P: AsRef<Path>>(from: String, to: P) {
     /* ZSTD DECOMPRESSION */
     let mut decoder = {
         let file = std::fs::File::open(from.clone()).unwrap();
