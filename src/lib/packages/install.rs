@@ -2,11 +2,7 @@ use crate::lib::db::{insert::insert, update::update_install_from_name};
 use crate::lib::packages::pkg_struct::PKG;
 use async_std::io::ReadExt;
 use indicatif::ProgressBar;
-use std::{
-    io::{Read, Write},
-    thread,
-    time::Duration,
-};
+use std::{io::{Read, Write}, thread, time::Duration};
 use walkdir::WalkDir;
 
 pub async fn install(packages: Vec<String>) {
@@ -80,16 +76,7 @@ async fn check_path(package_name: String, paths: Vec<Vec<String>>) {
         let mut n = 1;
         let mut string_path = String::new();
         let lenght = path.len();
-        let wait = (1.00 / lenght.to_string().parse::<f64>().unwrap_or_default() * 100.0)
-            .to_string()
-            .split('.')
-            .collect::<Vec<&str>>()[1]
-            .to_string()
-            .split_at(2)
-            .0
-            .parse::<u64>()
-            .unwrap()
-            + 100;
+        let wait = format!("{:.0}", (1.00 / lenght.to_string().parse::<f64>().unwrap_or_default() * 100.0 + 100.0)).parse::<u64>().unwrap();
         let pb = ProgressBar::new(lenght.clone().to_string().parse().unwrap());
         for p in path {
             pb.inc(1);
