@@ -3,7 +3,7 @@ use crate::lib::packages::install::get_config_of_package;
 
 pub async fn insert(package: String) {
     let mut conn = conn().await;
-    let package_info = get_config_of_package(package);
+    let package_info = if let Ok(e) = get_config_of_package(package) {e} else {println!("Error"); return;};
     let date = if let Some(e) = package_info.get_date() {
         e.to_string()
     } else {

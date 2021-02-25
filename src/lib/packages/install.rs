@@ -17,7 +17,15 @@ pub async fn install(packages: Vec<String>) {
 
 pub async fn install_package(package: String) {
     insert(package.clone()).await;
-    let struct_pkg: PKG = get_config_of_package(package.clone());
+    let struct_pkg: PKG = match get_config_of_package(package.clone()) {
+        Ok(e) => {
+            e
+        },
+        Err(e) => {
+            println!("{}", e.to_string());
+            return;
+        }
+    };
     if struct_pkg.get_name() == "" {
         print!("I can't install Package");
     } else {
@@ -39,12 +47,11 @@ pub async fn install_package(package: String) {
     }
 }
 
-pub fn get_config_of_package(package: String) -> PKG {
+pub fn get_config_of_package(package: String) -> std::result::Result<PKG, toml::de::Error> {
     let path = format!("./temp/{}/.PKG", package);
     let mut pkg_info = String::new();
-    let mut file = std::fs::File::open(path).expect("Error");
-    std::fs::File::read_to_string(&mut file, &mut pkg_info).expect("Error");
-    toml::from_str(pkg_info.as_str()).unwrap_or_else(|_| PKG::new())
+    std::fs::File::open(path).expect("Error").read_to_string(&mut pkg_info).expect("Error");
+    toml::from_str::<PKG>(pkg_info.as_str())
 }
 
 pub async fn install_file_of_package(package: String) -> std::io::Result<bool> {
