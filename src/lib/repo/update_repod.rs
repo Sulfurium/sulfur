@@ -47,9 +47,11 @@ pub async fn repo(action: Action, repo_name: String, url: String) {
 
 pub async fn write_repo_to_repod(name: String, repo: String) {
     let towrite = format!("[{}] \nrepo = \"{}\"", name, repo);
+    if name.is_empty() {println!("Name is empty"); return;}
+    if repo.is_empty() {println!("Url of repo is empty"); return;}
     if async_std::fs::write(format!("/etc/sulfur/repo.d/{}", name), towrite).await.is_ok() {
         println!("Repo ({}) has been added", name);
     } else {
-        println!("Oh no no")
+        println!("Error on file")
     }
 }
