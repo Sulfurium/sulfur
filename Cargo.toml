@@ -21,7 +21,7 @@ users = "0.11.0"
 structopt = "0.3.21"
 indicatif = "0.15.0"
 
-sqlx = { version = "0.5.1", features = ["runtime-async-std-native-tls", "sqlite"] }
+sqlx = { version = "0.5.2", features = ["runtime-async-std-native-tls", "sqlite"] }
 
 zstd = "0.6.0"
 tar = "0.4.33"
