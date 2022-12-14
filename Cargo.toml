@@ -12,7 +12,7 @@ async-std = "1.9.0"
 futures = "0.3.8"
 
 serde =  { version = "1.0.125", features = ["derive"] }
-toml = "0.5.8"
+toml = "0.5.10"
 
 runas = "0.2.1"
 walkdir = "2.3.2"
